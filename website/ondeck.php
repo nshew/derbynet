@@ -24,7 +24,11 @@ require_permission(VIEW_RACE_RESULTS_PERMISSION);
 
     $high_water_rounds = high_water_rounds();
 
-    $show_car_photos = read_raceinfo_boolean('show-cars-on-deck');
+    $show_car_photos   = read_raceinfo_boolean('show-cars-on-deck');
+    $show_race_results = read_raceinfo_boolean('show-results-on-deck');
+    $show_place_only   = read_raceinfo_boolean('show-place-only-on-deck');
+
+    $emphasize_racer_name = read_raceinfo_boolean('emphasize-racer-name');
 ?><!DOCTYPE html>
 <html>
 <head>
@@ -70,7 +74,7 @@ $sql = 'SELECT'
     .($use_master_sched ? 'masterheat' : 'heat').' as seq,'
     .' RegistrationInfo.carnumber, RegistrationInfo.firstname, RegistrationInfo.lastname,'
     .' Classes.classid, Rounds.roundid, RaceChart.racerid'
-    .' FROM '.inner_join('RaceChart', 'RegistrationInfo', 
+    .' FROM '.inner_join('RaceChart', 'RegistrationInfo',
                          'RegistrationInfo.racerid = RaceChart.racerid',
                          'Roster', 'Roster.racerid = RegistrationInfo.Racerid',
                          'Rounds', 'Rounds.roundid = Roster.roundid',
@@ -147,7 +151,7 @@ foreach ($groups as $group) {
       .'</tr>'."\n";
 
   // Draw a new set of lane headers.
-  // If no heats have been scheduled, then $nlanes isn't determined, and this won't 
+  // If no heats have been scheduled, then $nlanes isn't determined, and this won't
   // produce any actual lane headers.
   echo '<tr>';
   echo '<th></th>';
@@ -185,12 +189,25 @@ foreach ($groups as $group) {
       // Add the cell with the result we just got.
       // $ft = $rs['finishtime'];
       $heat_row .= '<td class="lane_'.$lane.' resultid_'.$rs['resultid'].'">';
-      $heat_row .= '<a class="racer_link" href="racer-results.php?racerid='.$rs['racerid'].'">'
-        .'<span class="car">'.htmlspecialchars($rs['carnumber'], ENT_QUOTES, 'UTF-8').'</span><br/>'."\n"
-        .'<span class="racer">('
-        .htmlspecialchars(mangled_name($rs, $name_style), ENT_QUOTES, 'UTF-8').')</span><br/>'."\n"
-		.'<span class="time"></span>' // Javascript will fill in the times, later
-      .'</a>';
+      $heat_row .= '<a class="racer_link" href="racer-results.php?racerid='.$rs['racerid'].'">';
+
+      if ($emphasize_racer_name) {
+	      $heat_row .= '<span class="racer">'
+		      . htmlspecialchars(mangled_name($rs, $name_style), ENT_QUOTES, 'UTF-8') . '</span><br/>' . "\n"
+		      . '<span class="car">#' . htmlspecialchars($rs['carnumber'], ENT_QUOTES, 'UTF-8') . '</span>' . "\n";
+      } else {
+	      $heat_row .= '<span class="car">' . htmlspecialchars($rs['carnumber'], ENT_QUOTES, 'UTF-8') . '</span><br/>' . "\n"
+		      . '<span class="racer">('
+		      . htmlspecialchars(mangled_name($rs, $name_style), ENT_QUOTES, 'UTF-8') . ')</span>' . "\n";
+      }
+
+      if ($show_race_results) {
+        if ($show_race_results) {
+	      $heat_row .= '<br/><span class="time"></span>'; // Javascript will fill in the times, later
+        }
+      }
+
+      $heat_row .= '</a>';
       $heat_row .= '<div class="ondeck_photo unpopulated">';
       if ($show_car_photos && isset($rs['carphoto']) && $rs['carphoto']) {
         $photos_in_heat = true;

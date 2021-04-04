@@ -1,0 +1,7 @@
+remove times from schedule
+  replace with finish order
+
+remove "bye" columns from schedule
+    only if on outer edges?
+
+give prominence to name over number in schedule

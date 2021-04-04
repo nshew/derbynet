@@ -235,7 +235,7 @@ function photo_settings($category, $photo_dir_id, $photo_dir_value, $photo_size_
     <div class="settings_group_settings">
       <p>
         <input type="hidden" name="drop-slowest-checkbox" value="yes"/>
-        <input id="drop-slowest" name="drop-slowest" data-enhanced="true" type="checkbox"<?php 
+        <input id="drop-slowest" name="drop-slowest" data-enhanced="true" type="checkbox"<?php
             if (read_raceinfo_boolean('drop-slowest')) echo ' checked="checked"';?>/>
         <label>Drop each racer's slowest heat?</label>
       </p>
@@ -247,7 +247,7 @@ function photo_settings($category, $photo_dir_id, $photo_dir_value, $photo_size_
       </p>
       <p>
         <input type="hidden" name="use-points-checkbox" value="yes"/>
-        <input id="use-points" name="use-points" data-enhanced="true" type="checkbox"<?php 
+        <input id="use-points" name="use-points" data-enhanced="true" type="checkbox"<?php
             if (read_raceinfo_boolean('use-points')) echo ' checked="checked"';?>/>
         <label>Race by points (place) instead of by times?</label>
       </p>
@@ -258,6 +258,45 @@ function photo_settings($category, $photo_dir_id, $photo_dir_value, $photo_size_
           if (read_raceinfo("max-runs-per-car", 0) != 0) echo ' checked="checked"'; ?>
           onchange="on_max_runs_change();"/>
         <label>Abbreviated single-run-per-car schedule?</label>
+      </p>
+    </div>
+  </div>
+
+  <div class="settings_group">
+    <div class="settings_group_image">
+      <img src="img/settings-rulebook.png"/>
+    </div>
+    <div class="settings_group_settings">
+      <p>Race Schedule/Racers On Deck settings</p>
+      <p>
+        <label>
+        <input type="hidden" name="emphasize-racer-name-checkbox" value="yes"/>
+        <input id="emphasize-racer-name" name="emphasize-racer-name" data-enhanced="true" type="checkbox"<?php
+            if (read_raceinfo_boolean('emphasize-racer-name')) echo ' checked="checked"';?>/>
+        Emphasize racer name?</label>
+      </p>
+      <p>
+        <label>
+        <input type="hidden" name="show-results-on-deck-checkbox" value="yes"/>
+        <input id="show-results-on-deck" name="show-results-on-deck" data-enhanced="true" type="checkbox"<?php
+            if (read_raceinfo_boolean('show-results-on-deck')) echo ' checked="checked"';?>/>
+        Hide results?</label>
+      </p>
+      <p>
+        <label>
+        <input type="hidden" name="show-place-only-on-deck-checkbox" value="yes"/>
+        <input id="show-place-only-on-deck" name="show-place-only-on-deck" data-enhanced="true" type="checkbox"<?php
+            if (read_raceinfo_boolean('show-results-on-deck')) { echo ' disabled="disabled"'; }
+            elseif (read_raceinfo_boolean('show-place-only-on-deck')) { echo ' checked="checked"'; }
+        ?>/>
+        Display only finishing place instead of time?</label>
+      </p>
+      <p>
+        <label>
+        <input type="hidden" name="hide-bye-lane-on-deck-checkbox" value="yes"/>
+        <input id="hide-bye-lane-on-deck" name="hide-bye-lane-on-deck" data-enhanced="true" type="checkbox"<?php
+            if (read_raceinfo_boolean('hide-bye-lane-on-deck')) { echo ' checked="checked"'; }?>/>
+        Hide "Bye" lanes?</label>
       </p>
     </div>
   </div>
